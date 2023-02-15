@@ -4,6 +4,7 @@
 
 //connect modules with require("..");
 const express = require("express"); //connect express module
+const { constants } = require("fs");
 
 //const morgan = require("morgan"); //connect morgan module          
     //морган це засіб для збору логів, даних про те які запити відправляються
@@ -20,15 +21,18 @@ const expressServer = express(); //when we call express() method, we create expr
 const PORT = 8080; //port 8080 - is a port where server is listening to requests
 const HOST = "localhost"; //where server works
 
+//import from fruits.js
+const { fruit, fruits } = require('./fruits');
+
 //api
 expressServer.get("/", (req, res) => {
     res.send("main");
 })
 expressServer.get("/health", (req, res) => {
-    res.send("ok");
+    res.send(fruit["freshness"]);
 })
 expressServer.get("/fruits", (req, res) => {
-    res.send("ok");
+    res.send(fruits);
 })
 
 //req - це запит який апі отримує за параметрами і тілом
