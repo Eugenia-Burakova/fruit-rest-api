@@ -28,13 +28,37 @@ const { fruit, fruits } = require('./fruits');
 expressServer.get("/", (req, res) => {
     res.send("main");
 })
-expressServer.get("/health", (req, res) => {
-    res.send(fruit["freshness"]);
+expressServer.get("/health", (req, res) => { // ці рядки просто мають бути
+    res.send("ok");                          // health i ok
 })
-expressServer.get("/fruits", (req, res) => {
+expressServer.get("/fruits", (req, res) => { // отримуємо масив з фруктами (об'єктами)
     res.send(fruits);
 })
+expressServer.get("/fruits/:fruit", (req, res) => {
 
+    const fruit_name = req.params.fruit;
+
+
+    console.log('elem');
+
+    //for each і вставити в дужки сенд(....)
+
+    //let fruits = [fruit];
+    // fruits.forEach(function(elem) {
+    //     console.log('elem');
+            
+    // });
+
+    for (let key in fruit) {
+        if (key == "name" && fruit[key] == "apple") {
+            let fruitName = 
+        }
+    }
+    
+
+    res.send(fruits[fruit]["name"]);
+
+})
 //req - це запит який апі отримує за параметрами і тілом
 //res - це відповідь яку дає апі
 //цей метод приймає запит і віддає відповідь і працює по шляху fruits/health
