@@ -1,6 +1,6 @@
 //before writing code, start these commands: 
 //npm init -y
-//npm express http-proxy-middleware dotenv morgan
+//npm express http-proxy-middleware dotenv morgan (встановлює ці модулі)
 
 //connect modules with require("..");
 const bodyParser = require("body-parser");
@@ -163,6 +163,26 @@ expressServer.put("/fruits/:fruit", (req, res) => {
     res.json(fruits);
 })
 
+                        //Змінити об‘єкт (змінити червоний колір на зелений, яблуко лишити) PATCH
+expressServer.patch("/fruits/:fruit", (req, res) => {
+    const currentFruitFromReq = req.params.fruit;
+    let newFruit = req.body; //тіло запиту (новий фрукт) а треба мені?
+    //console.log(newFruit);
+    //це треба, бо треба десь записувати змінені дані, лиш тре зробити так, шоб 
+    //сам фрукт не мож було міняти, а лише його властивості
+
+    //fruits = fruits.map(item => item.name == currentFruitFromReq); //якшо назва фрукту в масиві = назві фрукту з рядка запиту
+
+    fruits.forEach(item => { //map - модифікувати дані в масиві
+        if (item.name == currentFruitFromReq) { //якшо назва фрукту в масиві = назві фрукту з рядка запиту
+            item.colour = newFruit.colour; //тоді міняємо поле з кольором на таке, як ми пишемо у джейсоні у постмані
+            item.freshness = newFruit.freshness; //і міняємо свіжість на то значення, яке у джейсоні у постмані
+            //поле item.name писати не треба, бо ми робимо форІч по нашому масиву фрутс і то поле так і лишається незмінним
+        }
+    });
+    res.json(fruits); //в дужках змінені дані
+})
+
 
 
 //server listener (start server)
@@ -172,16 +192,3 @@ expressServer.listen(PORT, HOST, () => {
 
 //after writing code, start server:
 //node server-name.js
-
-
-//FRUITS
-// {
-//     "name": "pear",
-//     "colour": "yellow",
-//     "freshness": "fresh"
-// },
-// {
-//     "name": "peach",
-//     "colour": "orange",
-//     "freshness": "fresh"
-// }
