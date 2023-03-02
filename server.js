@@ -4,13 +4,16 @@
 
 //connect modules with require("..");
 const bodyParser = require("body-parser");
-    //аналізує тіла вхідних запитів у проміжному програмному забезпеченні перед вашими обробниками, доступними у властивості req.body
+    //аналізує тіла вхідних запитів у проміжному програмному забезпеченні перед вашими обробниками, 
+        //доступними у властивості req.body (те, шо редагую в постмані)
     //розкладає дані з тіла запиту
-    //цей модуль (проміжні обробники в express.js) дивиться дані JSON, URL адреси, що передані з викор. запиту http post
+    //цей модуль (проміжні обробники в express.js) дивиться дані JSON, URL адреси, 
+        //що передані з викор. запиту http post
     
-    //req.body - властивість, містить пари key-value, поданих у тілі запиту
-    //за замовчуванням він undefined  і заповнюється, коли викор. проміжне програмне забезпечення під назвою 
-    //body-parsing, наприклад express.urlencoded() або express.json()
+    //req.body - властивість, містить пари key-value, поданих у тілі запиту 
+        //(це тіло запиту, наш новий джейсон, котрий створюємо в постмані)
+        //за замовчуванням він undefined  і заповнюється, коли викор. проміжне програмне 
+        //забезпечення під назвою body-parsing, наприклад express.urlencoded() або express.json()
 
 const express = require("express"); //connect express module
 const { constants } = require("fs"); //filestrip module - працює з файлами
@@ -22,9 +25,11 @@ const { constants } = require("fs"); //filestrip module - працює з фай
 //const { createProxyMiddleware } = require("http-proxy-middleware"); //connect http-proxy-middleware module
     //проксі перенаправляє запити в інше місце (сервер перенапрявляв запити на сервіс погоди)
     //написали в {}, бо вибираємо ProxyMiddleware через деструктуризацію (!) із 
-    //відповідного модуля, бо більше нічого нам не треба звідти (?)
+        //відповідного модуля, бо більше нічого нам не треба звідти (?)
 
-require("dotenv").config(); //connect dotenv module --> and config() module to it
+//require("dotenv").config(); //connect dotenv module --> and config() module to it
+    //підключає файли розширення .env
+
 
 //crate express server
 const expressServer = express(); //when we call express() method, we create express server
@@ -34,16 +39,18 @@ const PORT = 8080; //port 8080 - is a port where server is listening to requests
 const HOST = "localhost"; //where server works
 
 //import from fruits.js
-let data = require('./fruits'); // зробили з файлу fruits.js модуль і так його підключили через рекваєр
-    //тут поки хз, чи добре зробила константу
-    //імпортую фрут і фрутс в змінну дата
+let data = require('./fruits'); // зробили з файлу fruits.js модуль (!) і так його підключили через рекваєр
+    //імпортую файл fruits.js (фрут і фрутс) в змінну дата
 
-//API
+                        //API
 
 expressServer.use(bodyParser.json());
-    //переглядає запити, у яких присутній заголовок Content-Type: application/json, і перетворює текстові вхідні дані JSON у доступні JS змінні в req.body
+    //переглядає запити, у яких присутній заголовок Content-Type: application/json, 
+        //і перетворює текстові вхідні дані JSON у доступні JS змінні в req.body
+
 expressServer.use(bodyParser.urlencoded({ extended: false }));
-    //робить те саме для запитів із кодуванням URL-адреси. extended: true уточнює, що об’єкт req.body міститиме значення будь-якого типу, а не просто рядки.
+    //робить те саме для запитів із кодуванням URL-адреси. extended: true уточнює, 
+        //що об’єкт req.body міститиме значення будь-якого типу, а не просто рядки
 
 //req (request) - це запит який апі отримує за параметрами і тілом
 //res (response) - це відповідь яку дає апі
