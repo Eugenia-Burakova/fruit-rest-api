@@ -89,8 +89,14 @@ expressServer.get("/health", (req, res) => { // ці рядки просто м�
 //коли робити запит на localhost:8080/health, має повернути відповідь "ok" і статус-код 200
 
 expressServer.get("/fruits", (req, res) => { // "/fruits"- шлях на сторінку фруктів (localhost:8080/fruits)
-   
-    res.json(fruits);                        // тут отримуємо масив з фруктами (об'єктами), коли робимо GET запит
+    client.query("SELECT * FROM warehouse.\"WARE\"", (err, qres) => {
+        if (err) {
+            console.log(err.stack);
+            res.json("couldn't get");
+        } else {
+            res.json(qres.rows);
+        }
+    })
 })
 //там, де текст показати, ставимо .send (main, health)
 //там, де показати дані/поля, ставимо json (fruits, apple..)
@@ -100,7 +106,7 @@ expressServer.get("/fruits/:fruit", (req, res) => { //хочемо вибрат�
     // /fruits має бути в шляху завжди тут, а apple ми вказуємо в АПІ (у запиті вказати, який фрукт нам треба).
         //тобто, в коді ми маємо /:fruit, а в запиті назву конкретного фрукту (/:apple),
         //тоді логіка буде така, що ми відправляємо запит на /fruits/apple в АПІ (?) 
-        // і із запиту дістаю назву фрукта
+        //і із запиту дістаю назву фрукта
 
     const currentFruitFromReq = req.params.fruit;//дістаю назву фрукта із запиту (запит (в апі) буде /fruits/apрle)
     //console.log(currentFruitFromReq); //apple!!!
@@ -117,9 +123,19 @@ expressServer.get("/fruits/:fruit", (req, res) => { //хочемо вибрат�
         }
     });
 
-    res.json(fruitsToShow); //показую нову корзину з яблуками
+    //res.json(fruitsToShow); //показую нову корзину з яблуками
     //тут не сенд, а джейсон, бо постману потрібен джейсон
 
+/////////////////////////////
+    client.query("SELECT * FROM warehouse.\"WARE\" WHERE \"FRUIT_NAME\" LIKE '" + currentFruitFromReq + "';", (err, qres) => {
+        if (err) {
+            console.log(err.stack);
+            res.json("couldn't get fruit");
+        } else {
+            console.log(qres.rows);
+            res.json(qres.rows);
+        }
+    })
 
     //теж правильне рішення (замість форІч)
     // let filterFruit = fruits.filter(item => item.name == currentFruitFromReq);
@@ -132,8 +148,17 @@ expressServer.post("/fruits", (req, res) => { //ми додаємо фрукт �
                                 //у змінну newFruit (тіло, яке пишемо в постмані при вибраному 
                                 //POST і де в Body -> raw і формат у спадаючому списку JSON, 
                                 //вказуємо свій фрукт (об'єкт) у форматі джейсон)
-    fruits.push(newFruit); //додала новий фрукт в масив фрутс
-    res.json(fruits); //показує корзину з фруктами включно з новим фруктом                       
+    //fruits.push(newFruit); //додала новий фрукт в масив фрутс
+    client.query("INSERT INTO warehouse.\"WARE\" (\"FRUIT_NAME\", \"PRICE\", \"QUANTITY\") VALUES ('" + 
+        newFruit.name + "', " + newFruit.price + ", " + newFruit.quantity + ");", (err, qres) => {
+            if (err) {
+                console.log(err.stack);
+                res.json("couldn't add");
+            } else {
+                res.json("added");
+            }
+    })
+     //показує корзину з фруктами включно з новим фруктом                       
 })
 
                         // Видалити об‘єкт DELETE
@@ -182,3 +207,19 @@ expressServer.listen(PORT, HOST, () => {
 
 //after writing code, start server:
 //node server-name.js
+
+//-------------------DB connection-------------------------------
+
+//connecting to PG
+const { Client } = require('pg')
+const client = new Client({
+    user: 'postgres',
+    host: 'localhost',
+    database: 'warehouseManager',
+    password: 'sqlhello',
+    port: 5432,
+})
+client.connect(function (err) {
+    if (err) throw err;
+    console.log("Connected!");
+});
