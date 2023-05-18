@@ -115,18 +115,6 @@ expressServer.get("/fruits/:fruit", (req, res) => { //хочемо вибрат�
         //«параметрами» маршруту. Наприклад, якщо у вас є шлях /student/:id, 
         //то властивість “id” доступна як req.params.id
 
-    let fruitsToShow = []; //нова корзина для яблук
-
-    fruits.forEach(item => {
-        if (item.name == currentFruitFromReq){ //перебираю фрккти, і якшо це якбуко
-            fruitsToShow.push(item); //складаю в корзину їх(fruitsToShow)
-        }
-    });
-
-    //res.json(fruitsToShow); //показую нову корзину з яблуками
-    //тут не сенд, а джейсон, бо постману потрібен джейсон
-
-/////////////////////////////
     client.query("SELECT * FROM warehouse.\"WARE\" WHERE \"FRUIT_NAME\" LIKE '" + currentFruitFromReq + "';", (err, qres) => {
         if (err) {
             console.log(err.stack);
@@ -155,7 +143,8 @@ expressServer.post("/fruits", (req, res) => { //ми додаємо фрукт �
                 console.log(err.stack);
                 res.json("couldn't add");
             } else {
-                res.json("added");
+                console.log(qres.rows);
+                res.json(qres.rows);
             }
     })
      //показує корзину з фруктами включно з новим фруктом                       
@@ -164,9 +153,19 @@ expressServer.post("/fruits", (req, res) => { //ми додаємо фрукт �
                         // Видалити об‘єкт DELETE
 expressServer.delete("/fruits/:fruit", (req, res) => { //ми видаляємо фрукт з корзини фрутс, тому тут /фрут
     const currentFruitFromReq = req.params.fruit;
-    fruits = fruits.filter(item => item.name != currentFruitFromReq); //якщо назва фрукту в масиві 
-                                                                         //не така, як назва фрукту в запиті
-    res.json(fruits); //показуємо ті фрукти, шо лишились            
+    // fruits = fruits.filter(item => item.name != currentFruitFromReq); //якщо назва фрукту в масиві 
+    //                                                                      //не така, як назва фрукту в запиті
+    // res.json(fruits); //показуємо ті фрукти, шо лишились  
+    
+    client.query("DELETE FROM warehouse.\"WARE\" WHERE \"FRUIT_NAME\" LIKE '" + currentFruitFromReq + "';", (err, qres) => {
+        if (err) {
+            console.log(err.stack);
+            res.json("couldn't delete fruit");
+        } else {
+            console.log(qres.rows);
+            res.json(qres.rows);
+        }
+    })
 })
 
                         //Замінити об‘єкт (замінити яблуко на грушу) PUT
