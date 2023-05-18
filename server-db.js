@@ -96,7 +96,7 @@ expressServer.get("/fruits", (req, res) => { // "/fruits"- шлях на сто�
         } else {
             res.json(qres.rows);
         }
-    })
+    });
 })
 //там, де текст показати, ставимо .send (main, health)
 //там, де показати дані/поля, ставимо json (fruits, apple..)
@@ -123,7 +123,7 @@ expressServer.get("/fruits/:fruit", (req, res) => { //хочемо вибрат�
             console.log(qres.rows);
             res.json(qres.rows);
         }
-    })
+    });
 
     //теж правильне рішення (замість форІч)
     // let filterFruit = fruits.filter(item => item.name == currentFruitFromReq);
@@ -143,43 +143,40 @@ expressServer.post("/fruits", (req, res) => { //ми додаємо фрукт �
                 console.log(err.stack);
                 res.json("couldn't add");
             } else {
-                console.log(qres.rows);
-                res.json(qres.rows);
+                res.json("added");
             }
-    })
+    });
      //показує корзину з фруктами включно з новим фруктом                       
 })
 
                         // Видалити об‘єкт DELETE
 expressServer.delete("/fruits/:fruit", (req, res) => { //ми видаляємо фрукт з корзини фрутс, тому тут /фрут
     const currentFruitFromReq = req.params.fruit;
-    // fruits = fruits.filter(item => item.name != currentFruitFromReq); //якщо назва фрукту в масиві 
-    //                                                                      //не така, як назва фрукту в запиті
-    // res.json(fruits); //показуємо ті фрукти, шо лишились  
-    
+       
     client.query("DELETE FROM warehouse.\"WARE\" WHERE \"FRUIT_NAME\" LIKE '" + currentFruitFromReq + "';", (err, qres) => {
         if (err) {
             console.log(err.stack);
             res.json("couldn't delete fruit");
         } else {
-            console.log(qres.rows);
-            res.json(qres.rows);
+            res.json("deleted");
         }
-    })
+    });
 })
 
                         //Замінити об‘єкт (замінити яблуко на грушу) PUT
 expressServer.put("/fruits/:fruit", (req, res) => {
     const currentFruitFromReq = req.params.fruit; // поточний фрукт із запиту
     let newFruit = req.body; //фрукт-джейсон з постмана
-    fruits = fruits.map(item => {
-        if (item.name == currentFruitFromReq) { //якшо ім'я фрукту збігається з фруктом в запиті
-            return newFruit; //повенути новий фрукт
+    
+    client.query("UPDATE warehouse.\"WARE\" SET \"PRICE\" = " + newFruit.price + ", \"QUANTITY\" = " + newFruit.quantity + ", \"FRUIT_NAME\" = '" + newFruit.fruit_name + "' WHERE \"FRUIT_NAME\" = '" + currentFruitFromReq + "';", (err, qres) => {
+        if (err) {
+            console.log(err.stack);
+            res.json("couldn't change fruit");
         } else {
-            return item; //інакше - залишити старий фрукт
+            console.log(qres.rows);
+            res.json("fruit is changed");
         }
     });
-    res.json(fruits); //вивести масив з фруктами
 })
 
                         //Змінити об‘єкт (змінити червоний колір на зелений, яблуко лишити) PATCH
@@ -187,15 +184,15 @@ expressServer.patch("/fruits/:fruit", (req, res) => {
     const currentFruitFromReq = req.params.fruit;
     let newFruit = req.body; //тіло запиту (новий фрукт)
 
-    //сам фрукт що не мож було міняти на інший, а лише його властивості
-    fruits.forEach(item => {
-        if (item.name == currentFruitFromReq) { //якшо назва фрукту в масиві = назві фрукту з рядка запиту
-            item.colour = newFruit.colour; //тоді міняємо поле з кольором на таке, як ми пишемо у джейсоні у постмані
-            item.freshness = newFruit.freshness; //і міняємо свіжість на то значення, яке у джейсоні у постмані
-            //поле item.name писати не треба, бо ми робимо форІч по нашому масиву фрутс і то поле так і лишається незмінним
+    client.query("UPDATE warehouse.\"WARE\" SET \"PRICE\" = " + newFruit.price + ", \"QUANTITY\" = " + newFruit.quantity + " WHERE \"FRUIT_NAME\" = '" + currentFruitFromReq + "';", (err, qres) => {
+        if (err) {
+            console.log(err.stack);
+            res.json("couldn't update fruit");
+        } else {
+            console.log(qres.rows);
+            res.json("fruit is updated");
         }
     });
-    res.json(fruits); //в дужках змінені дані (масив)
 })
 
 
