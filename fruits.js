@@ -12,12 +12,9 @@ let fruit = {
 //     freshness: 'fresh'
 // }
 
-
-
 let fruits = [fruit, 
     //object
 ];
-
 
 
 // let findFruit = fruits.find(item => item.name == "apple"); //тут знайшли конкретно фрукт епл (обєкт) { name: 'apple', colour: 'red', freshness: 'fresh' }
@@ -37,9 +34,6 @@ let fruits = [fruit,
 // let findFruitIndex = fruits.find(item => item.index == 1); //тут знайшли ім'я п фрукта по індеску
 // let fruitFromArr = findFruitIndex.name;
 // console.log(fruitFromArr); //apple
-
-
-
 
 module.exports = { fruit, fruits };
     //в {} вказуємо те, шо хочемо експортувати, щоб користувати ці дані в інших файлах
