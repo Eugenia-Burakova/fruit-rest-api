@@ -23,6 +23,14 @@
     background-color: var(--light-shade-color);
     height: 25px;
     margin-top: 20px;
+    display: none;
+
+
+
+
+
+
+
 }
 
 .header__contacts {
@@ -46,11 +54,14 @@
 
 .header__navigation-container {
     background-color: var(--light-shade-color);
+    opacity: 95%;
     height: 55px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    position: sticky;
+    top: 20px;
 }
 
 .header__navigation-logo i::before{
@@ -81,4 +92,103 @@
     background-size: cover;
     background-position: 50%;
     height: 500px;
+}
+
+.header__banner {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+    height: 500px;
+}
+
+.header__banner-title {
+    font-size: 30px;
+    font-family: 'Fira Sans', sans-serif;
+}
+
+.header__banner-text {
+    padding-right: 15%;
+}
+
+.header__banner-contacts {
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.header__banner-contacts-button {
+    background-color: var(--colored-buuton-color);
+    color: white;
+    font-size: 12px;
+    font-weight: 500;
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+    text-decoration: none;
+    width: fit-content;
+    transition: 1s;
+}
+
+@media (min-width: 385px) {
+    .header__banner-title {
+        padding-right: 30%;
+    }
+    .header__banner-text {
+        padding-right: 20%;
+    }
+}
+
+@media (min-width: 540px) {
+    .header__banner-title {
+        font-size: 40px;
+    }
+    .header__banner-text {
+        font-size: 20px;
+    }
+}
+
+@media (min-width: 680px) {
+    .header__contacts-container {
+        display: block;
+    }
+    .header__banner-contacts {
+        flex-direction: row;
+        justify-content: center;
+    }
+    .header__banner-contacts-button {
+        width: 160px;
+        text-align: center;
+        font-size: 13px;
+        padding: 15px 12px 15px 12px;
+    }
+}
+
+@media (min-width: 920px) {
+    .header__banner-text {
+        padding-right: 30%;
+    }
+    .header__banner-title {
+        padding: 30px 0 30px 0;
+    }
+    .header__banner-container {
+        height: 600px;
+        padding: 40px 0 40px 0;
+    }
+    .header__banner-contacts-button {
+        width: 160px;
+        text-align: center;
+        font-size: 13px;
+        font-weight: 600px;
+        padding: 15px 12px 15px 12px;
+    }
+}
+
+@media (min-width: 1100px) {
+    .header-container {
+        width: 1100px;
+    }
 }

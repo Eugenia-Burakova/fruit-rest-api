@@ -1,5 +1,6 @@
 @import url(colors.css);
 @import url(header.css);
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans&display=swap');
 
 * {
     margin: 0;
