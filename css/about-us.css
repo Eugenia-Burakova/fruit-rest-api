@@ -1,0 +1,39 @@
+.about-us {
+    background: linear-gradient(#e7ad95, #fff);
+    padding: 50px 20px 50px 20px;
+}
+
+.about-us__container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.about-us__img-box {
+    display: flex;
+    flex-direction: row;
+    padding: 20px 0 20px 0;
+    gap: 10px;
+}
+
+.about-us__img .apple {
+    padding: 0 0 20px 0;
+}
+
+.about-us__img .berry {
+    padding: 20px 0 0 0;
+}
+
+.about-us__info {
+    padding: 20px 0 20px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.about-us__info-ul {
+    margin-left: 30px;
+}
+
+
+
